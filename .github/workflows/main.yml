@@ -1,0 +1,34 @@
+name: CI Pipeline
+
+# O pipeline dispara em cada Push ou Pull Request na branch main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Faz o checkout do seu código para a máquina virtual
+      - uses: actions/checkout@v3
+
+      # 2. Configura o ambiente (ex: Node.js)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # 3. Instala as dependências do projeto
+      - name: Instalar dependências
+        run: npm install
+
+      # 4. Executa a análise estática (Lint)
+      - name: Rodar Lint
+        run: npm run lint # Certifique-se de ter este script no package.json
+
+      # 5. Executa os testes unitários
+      - name: Rodar testes
+        run: npm test
